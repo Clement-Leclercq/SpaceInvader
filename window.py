@@ -24,6 +24,23 @@ def play():
     player1 = newPlayer()
     lives.set("Lives: "+str(player1.getLife()))
     score.set("Score: "+str(player1.getScore()))
+    spaceCanvas.focus_set()
+
+#Fonction qui gère l'input de l'utilisateur pour renvoyer un  :
+def playerMove(event,pPlayer) :
+    key = event.keysym
+    if key == 'Right' : 
+        pPlayer.goRight()
+    elif key == 'Left' :
+        pPlayer.goLeft()
+    elif key == 'space' :
+        pPlayer.playerShoot()
+    print(pPlayer.getPosition())
+    spaceCanvas.coords(shipId,pPlayer.getPosition()[0],pPlayer.getPosition()[1])
+
+
+
+
 """
 Programme gérant la création de la fenêtre avec son initialisation
 """
@@ -50,12 +67,11 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 ship = PhotoImage(file = "picture/harold.gif")
-spaceCanvas.create_image(450,850,image = ship)
+shipId = spaceCanvas.create_image(450,850,image = ship)
 spaceCanvas.focus_set()
-spaceCanvas.bind("KP_Right",lambda event,player1 : playerMove)
-spaceCanvas.bind("KP_Left",lambda event,player1 : playerMove)
-spaceCanvas.bind("space",lambda event,player1 : playerMove)
-
+spaceCanvas.bind("<Left>",lambda event : playerMove(event,player1))
+spaceCanvas.bind("<Right>",lambda event : playerMove(event,player1))
+spaceCanvas.bind("<space>",lambda event : playerMove(event,player1))
 #Agencement dans la fenêtre
 scoreLabel.grid(row = 1, column = 1, sticky = W)
 livesLabel.grid(row = 1, column = 1, sticky = E)
@@ -67,25 +83,8 @@ play()
 
 spaceWindow.mainloop()
 
-#---------Code-----------#
-
-#Fonction qui gère l'input de l'utilisateur pour renvoyer un  :
-
-def playerMove(event,pPlayer) :
-    key = event.keysym
-    if key == 'KP_Right' : 
-        pPlayer.goRight()
-        print("droite")
-    elif key == 'KP_Left' :
-        pPlayer.goLeft()
-        print("gauche")
-    elif key == 'space' :
-        pPlayer.playerShoot()
-        print("espace")
-    spaceCanvas.coords(ship,pPlayer.getPosition(0),pPlayer.getPostition(1))
-
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 
 def alienMove() :
-    
+    print("test")

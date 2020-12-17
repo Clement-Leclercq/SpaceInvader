@@ -3,7 +3,7 @@
 #Classe joueur qui va nous donner et modifié son score, ses vies
 #Qui va aussi lui permettre de tirer et de se déplacer
 class player : 
-    def __init__(self,cScore,cLife,cPosition) :
+    def __init__(self,cScore,cLife,cPosition=[0,0]) :
         self.__life = cLife
         self.__score = cScore
         self.__position = cPosition
@@ -28,16 +28,16 @@ class player :
 
     def goRight(self):
         #Le joueur va à droite 
-        if self.__position(0) < 900 - self.__shipSize :
-            self.setPosition(self.__position(0)+10) 
+        if self.__position[0] < 900 - self.__shipSize :
+            self.setPositionX(self.__position[0]+10) 
 
     def goLeft(self):
         #Le joueur va à gauche
-        if self.__position(0) > 0 + self.__shipSize :
-            self.setPosition(self.__position(0)-10)
+        if self.__position[0] > 0 + self.__shipSize :
+            self.setPositionX(self.__position[0]-10)
 
-    def setPosition(self,newPosition):
-        self.__position = newPosition
+    def setPositionX(self,newPosition):
+        self.__position[0] = newPosition
         #PLace le vaisseau du joueur avec une méthode .coord
 
 
