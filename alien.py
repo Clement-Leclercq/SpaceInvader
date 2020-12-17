@@ -10,7 +10,7 @@ class alien :
 
     def getPosition(self):
         return self.__position
-
+"""
     def alienShoot(self):
         #Crée un tir d'alien 
 
@@ -22,3 +22,4 @@ class alien :
 
     def goDown(self):
         #Les aliens descendent lors d'un aller retour donc lors d'un allé retour.
+"""

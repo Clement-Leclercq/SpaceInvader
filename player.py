@@ -3,11 +3,11 @@
 #Classe joueur qui va nous donner et modifié son score, ses vies
 #Qui va aussi lui permettre de tirer et de se déplacer
 class player : 
-    def __init__(self,cScore,cLife,cPosition,cShipSize) :
+    def __init__(self,cScore,cLife,cPosition) :
         self.__life = cLife
         self.__score = cScore
         self.__position = cPosition
-        self.__shipSize = cShipSize
+        self.__shipSize = 50
 
     def setLife(self,newlife):
         self.__life = newlife
@@ -21,7 +21,7 @@ class player :
 
     def getScore(self):
         return self.__score
-
+"""
     def playerShoot(self):
         #Faire ici la fonction tkinter ou quand on appui
         #Sur espace ça tire
@@ -43,5 +43,5 @@ class player :
 
     def getPosition(self):
         return self.__position
-
+"""
 
