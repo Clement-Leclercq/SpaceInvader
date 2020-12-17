@@ -15,45 +15,43 @@ from tkinter import messagebox #permet la boite de dialogue
 #Importation de nos classes
 from player import player #Classe player qui gère vie et score et position du vaisseau
 from alien import alien #Classe alien qui gère le nombre et la position de l'alien
+
+def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
+    return player(0,3,[450,800])
+
 def play():
-    print("test")
-
+    global lives,score,player1
+    player1 = newPlayer()
+    lives.set("Lives: "+str(player1.getLife()))
+    score.set("Score: "+str(player1.getScore()))
 """
-Création du joueur
-"""
-score = 0
-lives = 3
-position = [450,800]
-
-player1 = player(score,lives,position)
-
-
-
-"""
-Programme gérant la création de la fenêtre
+Programme gérant la création de la fenêtre avec son initialisation
 """
 #Création de la fenêtre
 spaceWindow = Tk()
 spaceWindow.title("Space Invader")
 spaceWindow.geometry("980x690+200+100")
-
 #Création des différents éléments
 #Les boutons
 quitButton = Button(spaceWindow, text = "Quit", command = spaceWindow.destroy)
 newButton = Button(spaceWindow, text = "New game", command = play)
 #Les label
 lives = StringVar ()
-lives.set("Lives: "+player.getLife())
+lives.set("Lives: ")
 score = StringVar ()
-score.set("Score:")
+score.set("Score: 0")
 livesLabel = Label(spaceWindow, textvariable = lives)
 scoreLabel = Label(spaceWindow, textvariable = score)
-#Le Canvas => penser à mettre le vaisseau
-picture = PhotoImage(file="picture/background.gif")
+#Le Canvas
+picture = PhotoImage(file="picture/covidBackground.gif")
 x = 900
 y = 900
 spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
+
+
+
+
 
 #Agencement dans la fenêtre
 scoreLabel.grid(row = 1, column = 1, sticky = W)
@@ -61,5 +59,7 @@ livesLabel.grid(row = 1, column = 1, sticky = E)
 spaceCanvas.grid(row = 2, column = 1, rowspan = 2)
 newButton.grid(row = 2, column = 2)
 quitButton.grid(row = 2, column = 2, sticky = S)
+
+play()
 
 spaceWindow.mainloop()
