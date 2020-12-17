@@ -21,8 +21,8 @@ class player :
 
     def getScore(self):
         return self.__score
-"""
-    def playerShoot(self):
+
+    #def playerShoot(self):
         #Faire ici la fonction tkinter ou quand on appui
         #Sur espace ça tire
 
@@ -43,5 +43,5 @@ class player :
 
     def getPosition(self):
         return self.__position
-"""
+
 

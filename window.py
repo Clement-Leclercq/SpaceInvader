@@ -17,7 +17,7 @@ from player import player #Classe player qui gère vie et score et position du v
 from alien import alien #Classe alien qui gère le nombre et la position de l'alien
 
 def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
-    return player(0,3,[450,800])
+    return player(0,3,[450,850])
 
 def play():
     global lives,score,player1
@@ -50,9 +50,11 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 ship = PhotoImage(file = "picture/harold.gif")
-spaceCanvas.create_image(450,800,image = ship)
-
-
+spaceCanvas.create_image(450,850,image = ship)
+spaceCanvas.focus_set()
+spaceCanvas.bind("KP_Right",lambda event,player1 : playerMove)
+spaceCanvas.bind("KP_Left",lambda event,player1 : playerMove)
+spaceCanvas.bind("space",lambda event,player1 : playerMove)
 
 #Agencement dans la fenêtre
 scoreLabel.grid(row = 1, column = 1, sticky = W)
@@ -73,7 +75,11 @@ def playerMove(event,pPlayer) :
     key = event.keysym
     if key == 'KP_Right' : 
         pPlayer.goRight()
+        print("droite")
     elif key == 'KP_Left' :
         pPlayer.goLeft()
+        print("gauche")
     elif key == 'space' :
         pPlayer.playerShoot()
+        print("espace")
+    spaceCanvas.coords(ship,pPlayer.getPosition(0),pPlayer.getPostition(1))
