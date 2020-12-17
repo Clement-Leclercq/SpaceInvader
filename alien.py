@@ -8,7 +8,6 @@ class alien :
         self.__position = newPosition
         #Place le vaisseau du joueur avec une méthode .coord
 
-
     def getPosition(self):
         return self.__position
 
@@ -20,3 +19,6 @@ class alien :
 
     def bounceToLeft(self):
         #Rebond à gauche
+
+    def goDown(self):
+        #Les aliens descendent lors d'un aller retour donc lors d'un allé retour.
