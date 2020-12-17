@@ -1,11 +1,11 @@
 #------------------Classe alien------------------------#
 class alien :
     def __init__(self,cNumber,cPosition) :
-        self.__number=cNumber
-        self.__position=cPosition
+        self.__number = cNumber
+        self.__position = cPosition
 
     def setPosition(self,newPosition):
-        self.__position=newPosition
+        self.__position = newPosition
         #Place le vaisseau du joueur avec une méthode .coord
 
 
