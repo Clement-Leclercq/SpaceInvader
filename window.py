@@ -83,3 +83,9 @@ def playerMove(event,pPlayer) :
         pPlayer.playerShoot()
         print("espace")
     spaceCanvas.coords(ship,pPlayer.getPosition(0),pPlayer.getPostition(1))
+
+
+#Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
+
+def alienMove() :
+    
