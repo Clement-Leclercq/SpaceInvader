@@ -26,11 +26,15 @@ class player :
         #Faire ici la fonction tkinter ou quand on appui
         #Sur espace ça tire
 
-    def goLeft(self):
-        #Le joueur va à gauche 
-
     def goRight(self):
-        #Le joueur va à droite
+        #Le joueur va à droite 
+        if self.__position(0) < 900 - self.__shipSize :
+            self.setPosition(self.__position(0)+10) 
+
+    def goLeft(self):
+        #Le joueur va à gauche
+        if self.__position(0) > 0 + self.__shipSize :
+            self.setPosition(self.__position(0)-10)
 
     def setPosition(self,newPosition):
         self.__position = newPosition
