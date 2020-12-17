@@ -6,7 +6,7 @@ class alien :
 
     def setPosition(self,newPosition):
         self.__position = newPosition
-        #Place le vaisseau du joueur avec une méthode .coord
+        #Place le vaisseau de l'alien avec une méthode .coord
 
     def getPosition(self):
         return self.__position

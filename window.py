@@ -64,12 +64,6 @@ quitButton.grid(row = 2, column = 2, sticky = S)
 
 spaceWindow.mainloop()
 
-
-
-
-
-    
-
 #---------Code-----------#
 
 #Fonction qui gère l'input de l'utilisateur pour renvoyer un  :
@@ -82,4 +76,3 @@ def playerMove(event,pPlayer) :
         pPlayer.goLeft()
     elif key == 'space' :
         pPlayer.playerShoot()
-
