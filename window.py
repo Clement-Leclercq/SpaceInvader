@@ -5,7 +5,7 @@
 Ce programme permet la création de la fenêtre
 Programme fait par Pierre Gosson et Clément Leclercq
 Fait le 17/12/2020
-TO DO: TOUT
+TO DO: Tout
 """
 
 #Importation des bibliothèques tkinter nécessaires

@@ -32,9 +32,6 @@ class player :
     def goRight(self):
         #Le joueur va à droite
 
-    def shipSize(self):
-        #Taille du vaisseau
-
     def setPosition(self,newPosition):
         self.__position = newPosition
         #PLace le vaisseau du joueur avec une méthode .coord
