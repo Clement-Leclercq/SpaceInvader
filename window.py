@@ -12,10 +12,20 @@ TO DO: Tout
 from tkinter import Tk, Button, Label, StringVar, Entry, Canvas, PhotoImage, NW, W, E, N, S
 from tkinter import messagebox #permet la boite de dialogue
 
-
-
+#Importation de nos classes
+from player import player #Classe player qui gère vie et score et position du vaisseau
+from alien import alien #Classe alien qui gère le nombre et la position de l'alien
 def play():
     print("test")
+
+"""
+Création du joueur
+"""
+score = 0
+lives = 3
+position = [450,800]
+
+player1 = player(score,lives,position)
 
 
 
@@ -33,7 +43,7 @@ quitButton = Button(spaceWindow, text = "Quit", command = spaceWindow.destroy)
 newButton = Button(spaceWindow, text = "New game", command = play)
 #Les label
 lives = StringVar ()
-lives.set("Lives: ")
+lives.set("Lives: "+player.getLife())
 score = StringVar ()
 score.set("Score:")
 livesLabel = Label(spaceWindow, textvariable = lives)
