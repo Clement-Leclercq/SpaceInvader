@@ -10,6 +10,16 @@ class alien :
 
     def getPosition(self):
         return self.__position
+
+    def goingLeft(self):
+        #Le l'alien va à gauche
+        if self.__position(0) > 0 + self.__shipSize :
+            self.setPosition(self.__position(0)-10)
+
+    def goingRight(self):
+        #L'alien va à droite 
+        if self.__position(0) < 900 - self.__shipSize :
+            self.setPosition(self.__position(0)+10) 
 """
     def alienShoot(self):
         #Crée un tir d'alien 

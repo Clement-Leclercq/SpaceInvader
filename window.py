@@ -76,3 +76,9 @@ def playerMove(event,pPlayer) :
         pPlayer.goLeft()
     elif key == 'space' :
         pPlayer.playerShoot()
+
+
+#Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
+
+def alienMove() :
+    
