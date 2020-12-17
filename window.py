@@ -29,8 +29,8 @@ Programme gérant la création de la fenêtre avec son initialisation
 """
 #Création de la fenêtre
 spaceWindow = Tk()
-spaceWindow.title("Space Invader")
-spaceWindow.geometry("980x690+200+100")
+spaceWindow.title("Space Covid Invader Ultimate Edition")
+spaceWindow.geometry("980x930+0+0")
 #Création des différents éléments
 #Les boutons
 quitButton = Button(spaceWindow, text = "Quit", command = spaceWindow.destroy)
@@ -49,7 +49,8 @@ y = 900
 spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
-
+ship = PhotoImage(file = "picture/harold.gif")
+spaceCanvas.create_image(450,800,image = ship)
 
 
 
