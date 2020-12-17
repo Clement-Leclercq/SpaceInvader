@@ -63,16 +63,3 @@ newButton.grid(row = 2, column = 2)
 quitButton.grid(row = 2, column = 2, sticky = S)
 
 spaceWindow.mainloop()
-
-
-
-
-
-    
-
-#---------Code-----------#
-
-#Une fonction 
-
-
-
