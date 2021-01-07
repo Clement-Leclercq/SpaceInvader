@@ -116,6 +116,9 @@ vaccine = PhotoImage(file = "picture/playershoot.gif")
 shoot = False
 imBunker = PhotoImage(file = "picture/masqueCovid.gif")
 ship = PhotoImage(file = "picture/harold.gif")
+covid = PhotoImage(file = "picture/covid1.gif")
+karen = PhotoImage(file = "picture/karen.gif")
+
 
 #Création du vaisseau  et de ses intéractions
 shipId = spaceCanvas.create_image(0,0,image = ship)
