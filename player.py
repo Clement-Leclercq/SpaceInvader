@@ -12,7 +12,6 @@ class player :
     def setLife(self,newlife):
         self.__life = newlife
 
-
     def getLife(self):
         return self.__life
 
@@ -21,10 +20,6 @@ class player :
 
     def getScore(self):
         return self.__score
-
-    #def playerShoot(self):
-        #Faire ici la fonction tkinter ou quand on appui
-        #Sur espace ça tire
 
     def goRight(self):
         #Le joueur va à droite 

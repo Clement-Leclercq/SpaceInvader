@@ -18,7 +18,8 @@ from alien import alien #Classe alien qui gère le nombre et la position de l'al
 
 def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
     return player(0,3,[450,700])
-
+#zizi
+#Fonction
 def play():
     global lives,score,player1
     player1 = newPlayer()
@@ -35,7 +36,7 @@ def playerMove(event,pPlayer) :
     elif key == 'Left' :
         pPlayer.goLeft()
     elif key == 'space' :
-        pPlayer.playerShoot()
+        playerShoot()
     spaceCanvas.coords(shipId,pPlayer.getPosition()[0],pPlayer.getPosition()[1])
 
 
