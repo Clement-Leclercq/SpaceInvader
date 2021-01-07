@@ -22,7 +22,7 @@ def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec d
 def play():
     global lives,score,player1
     player1 = newPlayer()
-    spaceCanvas.coords(shipId,pPlayer.getPosition()[0],pPlayer.getPosition()[1])
+    spaceCanvas.coords(shipId,player1.getPosition()[0],player1.getPosition()[1])
     lives.set("Lives: "+str(player1.getLife()))
     score.set("Score: "+str(player1.getScore()))
     spaceCanvas.focus_set()
