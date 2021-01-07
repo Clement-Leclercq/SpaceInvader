@@ -66,7 +66,8 @@ def playerShoot():
     spaceWindow.after(50,_shootMove,positionX,positionY)
     
 
-#Fonction qui gère les bunkers :
+#Fonction qui positionne les bunkers :
+
 def fBunkers() :
     idList=[]
     bunkers=[]
