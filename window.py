@@ -5,7 +5,7 @@
 Ce programme permet la création de la fenêtre
 Programme fait par Pierre Gosson et Clément Leclercq
 Fait le 17/12/2020
-TO DO: Tout
+TO DO: ajuster les bunkers pour que ce soit équitable (3 mis 2 enlevé périodique)
 """
 #Imporation de time pour permettre la gestion de pause
 import time
@@ -17,6 +17,7 @@ from tkinter import messagebox #permet la boite de dialogue
 #Importation de nos classes
 from player import player #Classe player qui gère vie et score et position du vaisseau
 from alien import alien #Classe alien qui gère le nombre et la position de l'alien
+from bunker import bunker #Classe bunker qui gère les protections entre le joueur et les aliens
 
 def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
     return player(0,3,[450,700])
@@ -29,6 +30,7 @@ def play():
     lives.set("Lives: "+str(player1.getLife()))
     score.set("Score: "+str(player1.getScore()))
     spaceCanvas.focus_set()
+    fBunkers()
 
 #Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement
 def playerMove(event,pPlayer) :
@@ -64,6 +66,26 @@ def playerShoot():
     spaceWindow.after(250,_shootMoove,positionX,positionY)
     
 
+#Fonction qui gère les bunkers :
+def fBunkers() :
+    idList=[]
+    bunkers=[]
+    yPosition = 600
+    xPosition = 25
+
+    for i in range (0,18) :
+        tempBunker = bunker(xPosition,yPosition)
+        bunkers.append(tempBunker)
+        idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
+        xPosition += 50
+    xPosition = 25
+    for j in range(0,18) :   
+        yPosition=550
+        tempBunker = bunker(xPosition,yPosition)
+        bunkers.append(tempBunker)
+        idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
+        xPosition += 50
+
 """
 Programme gérant la création de la fenêtre avec son initialisation
 """
@@ -92,6 +114,7 @@ spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 #Image et variables globales
 vaccine = PhotoImage(file = "picture/playershoot.gif")
 shoot = False
+imBunker = PhotoImage(file = "picture/masqueCovid.gif")
 ship = PhotoImage(file = "picture/harold.gif")
 
 #Création du vaisseau  et de ses intéractions
@@ -100,6 +123,7 @@ spaceCanvas.focus_set()
 spaceCanvas.bind("<Left>",lambda event : playerMove(event,player1))
 spaceCanvas.bind("<Right>",lambda event : playerMove(event,player1))
 spaceCanvas.bind("<space>",lambda event : playerMove(event,player1))
+
 #Agencement dans la fenêtre
 scoreLabel.grid(row = 1, column = 1, sticky = W)
 livesLabel.grid(row = 1, column = 1, sticky = E)
@@ -126,3 +150,13 @@ spaceWindow.mainloop()
 
 def alienMove() :
     print("test")
+
+
+
+
+
+
+
+
+
+

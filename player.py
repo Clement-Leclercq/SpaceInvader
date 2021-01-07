@@ -1,4 +1,9 @@
-
+"""
+Ce programme crée la classe player
+Programme fait par Pierre Gosson et Clément Leclercq
+Fait le 17/12/2020
+TO DO: Tout
+"""
 #------------Classe joueur-----------------#
 #Classe joueur qui va nous donner et modifié son score, ses vies
 #Qui va aussi lui permettre de tirer et de se déplacer
