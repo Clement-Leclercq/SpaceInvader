@@ -19,17 +19,18 @@ class alien :
         return self.__position
 
     def goingLeft(self):   
-        #Le l'alien va à gauche
-        if self.__position[0] > 50 :
-            self.setPosition(self.__position[0]-10)
+        #L'alien va à gauche
+        self.setPosition(self.__position[0]-10)
 
     def goingRight(self):
         #L'alien va à droite 
-        if self.__position[0] < 850 :
-            self.setPosition(self.__position[0]+10) 
+        self.setPosition(self.__position[0]+10) 
     
     def decreaseDurability(self,decrease):
         self.__durability -= decrease
+    
+    def dispAlien(self,id,picture):
+        return id.create_image(self.__position[0],self.__position[1], image = picture)
 """
     def alienShoot(self):
         #Crée un tir d'alien 

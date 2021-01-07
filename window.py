@@ -30,7 +30,8 @@ def play():
     lives.set("Lives: "+str(player1.getLife()))
     score.set("Score: "+str(player1.getScore()))
     spaceCanvas.focus_set()
-    fBunkers()
+    bunkers()
+    aliens()
 
 #Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement
 def playerMove(event,pPlayer) :
@@ -67,25 +68,41 @@ def playerShoot():
     
 
 #Fonction qui positionne les bunkers :
-
-def fBunkers() :
+def bunkers() :
     idList=[]
-    bunkers=[]
+    bunkerList=[]
     yPosition = 600
     xPosition = 25
 
     for i in range (0,18) :
         tempBunker = bunker(xPosition,yPosition)
-        bunkers.append(tempBunker)
+        bunkerList.append(tempBunker)
         idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
         xPosition += 50
     xPosition = 25
     for j in range(0,18) :   
         yPosition=550
         tempBunker = bunker(xPosition,yPosition)
-        bunkers.append(tempBunker)
+        bunkerList.append(tempBunker)
         idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
         xPosition += 50
+
+#Fonction qui positionne les aliens :
+def aliens():
+    alienList = []
+    alienIdList = []
+    #Code temporaire
+    tempAlien = alien(2,[100,50],1)
+    alienList.append(tempAlien)
+    alienIdList.append(tempAlien.dispAlien(spaceCanvas,karen))
+    #Fin code temporaire
+
+def alienMove(alienList,alienIdList):
+    
+
+def changingCoord(tempAlien,idAlien):
+    spaceCanvas.coords(idAlien,tempAlien.getPosition()[0],tempAlien.getPosition()[1])
+
 
 """
 Programme gérant la création de la fenêtre avec son initialisation
