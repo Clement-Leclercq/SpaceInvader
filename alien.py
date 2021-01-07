@@ -1,8 +1,9 @@
 #------------------Classe alien------------------------#
 class alien :
-    def __init__(self,cNumber,cPosition) :
-        self.__number = cNumber
+    def __init__(self,cType,cPosition,cDurability) :
+        self.__type = cType
         self.__position = cPosition
+        self.__durability = cDurability
 
     def setPosition(self,newPosition):
         self.__position = newPosition
@@ -11,15 +12,18 @@ class alien :
     def getPosition(self):
         return self.__position
 
-    def goingLeft(self):
+    def goingLeft(self):y   
         #Le l'alien va à gauche
-        if self.__position[0] > 0 + self.__shipSize :
+        if self.__position[0] > 50 :
             self.setPosition(self.__position[0]-10)
 
     def goingRight(self):
         #L'alien va à droite 
-        if self.__position[0] < 900 - self.__shipSize :
+        if self.__position[0] < 850 :
             self.setPosition(self.__position[0]+10) 
+    
+    def decreaseDurability(self,decrease):
+        self.__durability -= decrease
 """
     def alienShoot(self):
         #Crée un tir d'alien 
