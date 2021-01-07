@@ -27,7 +27,7 @@ def play():
     score.set("Score: "+str(player1.getScore()))
     spaceCanvas.focus_set()
 
-#Fonction qui gère l'input de l'utilisateur pour renvoyer un  :
+#Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement:
 def playerMove(event,pPlayer) :
     key = event.keysym
     if key == 'Right' : 
