@@ -89,9 +89,12 @@ y = 750
 spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
+#Image et variables globales
 vaccine = PhotoImage(file = "picture/playershoot.gif")
 shoot = False
 ship = PhotoImage(file = "picture/harold.gif")
+
+#Création du vaisseau  et de ses intéractions
 shipId = spaceCanvas.create_image(0,0,image = ship)
 spaceCanvas.focus_set()
 spaceCanvas.bind("<Left>",lambda event : playerMove(event,player1))
