@@ -18,7 +18,7 @@ class alien :
     def getPosition(self):
         return self.__position
 
-    def goingLeft(self):y   
+    def goingLeft(self):   
         #Le l'alien va à gauche
         if self.__position[0] > 50 :
             self.setPosition(self.__position[0]-10)
