@@ -28,12 +28,12 @@ class player :
 
     def goRight(self):
         #Le joueur va à droite 
-        if self.__position[0] < 900 - self.__shipSize :
+        if self.__position[0] < 850:
             self.setPositionX(self.__position[0]+10) 
 
     def goLeft(self):
         #Le joueur va à gauche
-        if self.__position[0] > 0 + self.__shipSize :
+        if self.__position[0] > 50 :
             self.setPositionX(self.__position[0]-10)
 
     def setPositionX(self,newPosition):

@@ -90,6 +90,7 @@ stopButton = Button(haroldAskForHelp, text = "Yes Captain !", command = haroldAs
 haroldLabel.grid(row = 1)
 textLabel.grid(row = 2)
 stopButton.grid(row = 3)
+haroldAskForHelp.attributes("-topmost",True)
 spaceWindow.mainloop()
 
 
