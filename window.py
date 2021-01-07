@@ -42,7 +42,7 @@ def playerMove(event,pPlayer) :
 
 
 
-#Fonction qui gère les bunkers :
+#Fonction qui positionne les bunkers :
 
 def fBunkers() :
     idList=[]
