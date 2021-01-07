@@ -1,3 +1,9 @@
+"""
+Ce programme crée la classe alien
+Programme fait par Pierre Gosson et Clément Leclercq
+Fait le 17/12/2020
+TO DO: Tout
+"""
 #------------------Classe alien------------------------#
 class alien :
     def __init__(self,cNumber,cPosition) :

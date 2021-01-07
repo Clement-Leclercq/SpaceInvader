@@ -99,3 +99,6 @@ spaceWindow.mainloop()
 
 def alienMove() :
     print("test")
+
+
+#Fonction qui gère les bunkers 
