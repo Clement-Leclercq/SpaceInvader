@@ -47,7 +47,7 @@ def playerMove(event,pPlayer) :
 #Fonction qui gère le tir du joueur
 def playerShoot():
     global shoot
-    def _shootMoove(X,Y): #Fonction interne 
+    def _shootMove(X,Y): #Fonction interne 
         global shoot
         # Alien get position
         # if Y et X = une position alien détruitre alien et le shoot sinon elif
@@ -58,12 +58,12 @@ def playerShoot():
         else:
             Y -= 25
             spaceCanvas.coords(vaccineId,X,Y)
-            spaceWindow.after(250,_shootMoove,X,Y)
+            spaceWindow.after(50,_shootMove,X,Y)
     shoot = True
     positionX = player1.getPosition()[0]
     positionY = player1.getPosition()[1] - 50
     vaccineId = spaceCanvas.create_image(positionX,positionY,image = vaccine)
-    spaceWindow.after(250,_shootMoove,positionX,positionY)
+    spaceWindow.after(50,_shootMove,positionX,positionY)
     
 
 #Fonction qui gère les bunkers :
