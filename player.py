@@ -40,7 +40,6 @@ class player :
         self.__position[0] = newPosition
         #PLace le vaisseau du joueur avec une méthode .coord
 
-
     def getPosition(self):
         return self.__position
 
