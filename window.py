@@ -102,12 +102,12 @@ def bunkers() :
 #Fonction qui positionne les aliens :
 def aliens():
     move = 1
-    alienList = []
+    alienList = [alien(2,[100,50],1)]
     alienIdList = []
     #Code temporaire
     for element in alienList:
         alienIdList.append(element.dispAlien(spaceCanvas,karen))
-    #alienMove(alienList,alienIdList,move)
+    alienMove(alienList,alienIdList,move)
     #Fin code temporaire
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
