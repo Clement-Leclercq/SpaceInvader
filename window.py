@@ -5,7 +5,7 @@
 Ce programme permet la création de la fenêtre
 Programme fait par Pierre Gosson et Clément Leclercq
 Fait le 17/12/2020
-TO DO: ajuster les bunkers pour que ce soit équitable (3 mis 2 enlevé périodique)
+TO DO: 
 """
 #Imporation de time pour permettre la gestion de pause
 import time
