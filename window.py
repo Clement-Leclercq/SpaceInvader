@@ -5,7 +5,7 @@
 Ce programme permet la création de la fenêtre
 Programme fait par Pierre Gosson et Clément Leclercq
 Fait le 17/12/2020
-TO DO: ajuster les bunkers pour que ce soit équitable (3 mis 2 enlevé périodique)
+TO DO: 
 """
 #Imporation de time pour permettre la gestion de pause
 import time
@@ -67,25 +67,37 @@ def playerShoot():
     spaceWindow.after(50,_shootMove,positionX,positionY)
     
 
+#Fonction qui crée la liste de bunker avec son image dans le canvas
+def bunkerCreate(fXPos,fYPos,fNbrBunker) :
+    global idBunkerList
+    global bunkerList
+    for i in range (0,fNbrBunker) :    
+        tempBunker = bunker(fXPos,fYPos)
+        bunkerList.append(tempBunker)
+        idBunkerList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
+        fXPos += 50
+
+
 #Fonction qui positionne les bunkers :
 def bunkers() :
-    idList=[]
-    bunkerList=[]
-    yPosition = 600
-    xPosition = 25
+    global idBunkerList
+    global bunkerList
+#Premiere ligne 
+    bunkerCreate(25,600,3)
+    bunkerCreate(275,600,3)
+    bunkerCreate(525,600,3)
+    bunkerCreate(775,600,3)
+#Deuxième ligne
+    bunkerCreate(25,550,3)
+    bunkerCreate(275,550,3)
+    bunkerCreate(525,550,3)
+    bunkerCreate(775,550,3)
 
-    for i in range (0,18) :
-        tempBunker = bunker(xPosition,yPosition)
-        bunkerList.append(tempBunker)
-        idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
-        xPosition += 50
-    xPosition = 25
-    for j in range(0,18) :   
-        yPosition=550
-        tempBunker = bunker(xPosition,yPosition)
-        bunkerList.append(tempBunker)
-        idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
-        xPosition += 50
+
+# Séquençage des bunkers avec bunkerCreate :
+
+
+    
 
 #Fonction qui positionne les aliens :
 def aliens():
@@ -98,6 +110,7 @@ def aliens():
     #alienMove(alienList,alienIdList,move)
     #Fin code temporaire
 
+<<<<<<< HEAD
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):
     if len(alienList)>0:
@@ -122,6 +135,10 @@ def alienMove(alienList,alienIdList,move):
         else :
             move = 0
             spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+=======
+#def alienMove(alienList,alienIdList):
+    
+>>>>>>> a65b51c21ea43be6ce9220b8bebdeebd8a14205e
 
 def changingCoord(tempAlien,idAlien):
     spaceCanvas.coords(idAlien,tempAlien.getPosition()[0],tempAlien.getPosition()[1])
@@ -153,6 +170,8 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 #Image et variables globales
+bunkerList=[]
+idBunkerList=[]
 vaccine = PhotoImage(file = "picture/playershoot.gif")
 shoot = False
 imBunker = PhotoImage(file = "picture/masqueCovid.gif")
