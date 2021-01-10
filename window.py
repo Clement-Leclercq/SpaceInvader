@@ -110,7 +110,6 @@ def aliens():
     #alienMove(alienList,alienIdList,move)
     #Fin code temporaire
 
-<<<<<<< HEAD
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):
     if len(alienList)>0:
@@ -135,10 +134,6 @@ def alienMove(alienList,alienIdList,move):
         else :
             move = 0
             spaceWindow.after(100,alienMove,alienList,alienIdList,move)
-=======
-#def alienMove(alienList,alienIdList):
-    
->>>>>>> a65b51c21ea43be6ce9220b8bebdeebd8a14205e
 
 def changingCoord(tempAlien,idAlien):
     spaceCanvas.coords(idAlien,tempAlien.getPosition()[0],tempAlien.getPosition()[1])
