@@ -67,25 +67,37 @@ def playerShoot():
     spaceWindow.after(50,_shootMove,positionX,positionY)
     
 
+#Fonction qui crée la liste de bunker avec son image dans le canvas
+def bunkerCreate(fXPos,fYPos,fNbrBunker) :
+    global idBunkerList
+    global bunkerList
+    for i in range (0,fNbrBunker) :    
+        tempBunker = bunker(fXPos,fYPos)
+        bunkerList.append(tempBunker)
+        idBunkerList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
+        fXPos += 50
+
+
 #Fonction qui positionne les bunkers :
 def bunkers() :
-    idList=[]
-    bunkerList=[]
-    yPosition = 600
-    xPosition = 25
+    global idBunkerList
+    global bunkerList
+#Premiere ligne 
+    bunkerCreate(25,600,3)
+    bunkerCreate(275,600,3)
+    bunkerCreate(525,600,3)
+    bunkerCreate(775,600,3)
+#Deuxième ligne
+    bunkerCreate(25,550,3)
+    bunkerCreate(275,550,3)
+    bunkerCreate(525,550,3)
+    bunkerCreate(775,550,3)
 
-    for i in range (0,18) :
-        tempBunker = bunker(xPosition,yPosition)
-        bunkerList.append(tempBunker)
-        idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
-        xPosition += 50
-    xPosition = 25
-    for j in range(0,18) :   
-        yPosition=550
-        tempBunker = bunker(xPosition,yPosition)
-        bunkerList.append(tempBunker)
-        idList.append(tempBunker.dispBunker(spaceCanvas,imBunker))
-        xPosition += 50
+
+# Séquençage des bunkers avec bunkerCreate :
+
+
+    
 
 #Fonction qui positionne les aliens :
 def aliens():
@@ -97,7 +109,7 @@ def aliens():
     alienIdList.append(tempAlien.dispAlien(spaceCanvas,karen))
     #Fin code temporaire
 
-def alienMove(alienList,alienIdList):
+#def alienMove(alienList,alienIdList):
     
 
 def changingCoord(tempAlien,idAlien):
@@ -130,6 +142,8 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 #Image et variables globales
+bunkerList=[]
+idBunkerList=[]
 vaccine = PhotoImage(file = "picture/playershoot.gif")
 shoot = False
 imBunker = PhotoImage(file = "picture/masqueCovid.gif")
