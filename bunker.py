@@ -20,8 +20,8 @@ class bunker :
         self.__yPos = newYPosition
         #Place le bunker avec une méthode .coord
 
-    def dispBunker(self,id,picture):
-        return id.create_image(self.__xPos,self.__yPos, image = picture)
+    def dispBunker(self,idCanvas,picture):
+        return idCanvas.create_image(self.__xPos,self.__yPos, image = picture)
         
 
     

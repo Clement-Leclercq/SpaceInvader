@@ -89,16 +89,39 @@ def bunkers() :
 
 #Fonction qui positionne les aliens :
 def aliens():
+    move = 1
     alienList = []
     alienIdList = []
     #Code temporaire
-    tempAlien = alien(2,[100,50],1)
-    alienList.append(tempAlien)
-    alienIdList.append(tempAlien.dispAlien(spaceCanvas,karen))
+    for element in alienList:
+        alienIdList.append(element.dispAlien(spaceCanvas,karen))
+    #alienMove(alienList,alienIdList,move)
     #Fin code temporaire
 
-def alienMove(alienList,alienIdList):
-    
+#Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
+def alienMove(alienList,alienIdList,move):
+    if len(alienList)>0:
+        posAlienLeft = alienList[0].getPosition()
+        posAlienRight = alienList[-1].getPosition()
+        if posAlienLeft[0] > 30 and move == 0:
+            for element,idElement in zip(alienList,alienIdList):
+                element.goingLeft()
+                changingCoord(element,idElement)
+            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+        elif posAlienLeft[0] <= 30 and move == 0:
+            move = 1
+            for element,idElement in zip(alienList,alienIdList):
+                element.goingDown()
+                changingCoord(element,idElement)
+            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+        elif posAlienRight[0] < 870 and move == 1:
+            for element,idElement in zip(alienList,alienIdList):
+                element.goingRight()
+                changingCoord(element,idElement)
+            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+        else :
+            move = 0
+            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
 
 def changingCoord(tempAlien,idAlien):
     spaceCanvas.coords(idAlien,tempAlien.getPosition()[0],tempAlien.getPosition()[1])
@@ -167,10 +190,7 @@ haroldAskForHelp.attributes("-topmost",True)
 spaceWindow.mainloop()
 
 
-#Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 
-def alienMove() :
-    print("test")
 
 
 
