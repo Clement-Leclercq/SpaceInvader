@@ -18,6 +18,9 @@ class alien :
     def getPosition(self):
         return self.__position
 
+    def getType(self):
+        return self.__type
+
     def goingLeft(self):   
         #L'alien va à gauche
         self.setPosition(self.__position[0]-10)
