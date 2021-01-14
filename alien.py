@@ -19,7 +19,7 @@ class alien :
         return self.__position
 
     def goingDown(self):
-        self.__position[1] += 10
+        self.__position[1] += 25
 
     def goingLeft(self):   
         #L'alien va à gauche

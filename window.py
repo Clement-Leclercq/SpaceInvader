@@ -50,6 +50,8 @@ def playerShoot():
     global shoot
     def _shootMove(X,Y): #Fonction interne 
         global shoot
+        global alienList
+        global alienIdList
         # Alien get position
         # if Y et X = une position alien détruitre alien et le shoot sinon elif
         if Y < 50:
@@ -93,47 +95,65 @@ def bunkers() :
     bunkerCreate(525,550,3)
     bunkerCreate(775,550,3)
 
-
-# Séquençage des bunkers avec bunkerCreate :
-
-
     
 
 #Fonction qui positionne les aliens :
+def alienCreate(xPos,yPos,nbr,alienType):
+    global alienList
+    global alienIdList
+    for i in range(0,nbr):
+        tempAlien = alien(alienType,[xPos,yPos],1)
+        alienList.append(tempAlien)
+        if alienType == 1:
+            image = covid
+            alienType = 2
+        else:
+            image = karen
+            alienType = 1
+        alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
+        xPos += 60
+
 def aliens():
+    global alienList
+    global alienIdList
     move = 1
-    alienList = [alien(2,[100,50],1)]
-    alienIdList = []
-    #Code temporaire
-    for element in alienList:
-        alienIdList.append(element.dispAlien(spaceCanvas,karen))
+    alienCreate(75,50,11,2)
+    alienCreate(100,110,11,1)
+    alienCreate(75,170,11,2)
+    alienCreate(100,230,11,1)
     alienMove(alienList,alienIdList,move)
-    #Fin code temporaire
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):
     if len(alienList)>0:
         posAlienLeft = alienList[0].getPosition()
         posAlienRight = alienList[-1].getPosition()
+        for element in alienList:
+            posAlien = element.getPosition()
+            if posAlien[0] < posAlienLeft[0]:
+                posAlienLeft = posAlien
+            elif posAlien[0] > posAlienRight[0]:
+                posAlienRight = posAlien
+
         if posAlienLeft[0] > 30 and move == 0:
             for element,idElement in zip(alienList,alienIdList):
                 element.goingLeft()
                 changingCoord(element,idElement)
-            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+            spaceWindow.after(200,alienMove,alienList,alienIdList,move)
         elif posAlienLeft[0] <= 30 and move == 0:
             move = 1
             for element,idElement in zip(alienList,alienIdList):
                 element.goingDown()
                 changingCoord(element,idElement)
-            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+            spaceWindow.after(200,alienMove,alienList,alienIdList,move)
         elif posAlienRight[0] < 870 and move == 1:
             for element,idElement in zip(alienList,alienIdList):
                 element.goingRight()
                 changingCoord(element,idElement)
-            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+            spaceWindow.after(200,alienMove,alienList,alienIdList,move)
         else :
             move = 0
-            spaceWindow.after(100,alienMove,alienList,alienIdList,move)
+            spaceWindow.after(200,alienMove,alienList,alienIdList,move)
 
 def changingCoord(tempAlien,idAlien):
     spaceCanvas.coords(idAlien,tempAlien.getPosition()[0],tempAlien.getPosition()[1])
@@ -167,6 +187,8 @@ spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 #Image et variables globales
 bunkerList=[]
 idBunkerList=[]
+alienList = []
+alienIdList = []
 vaccine = PhotoImage(file = "picture/playershoot.gif")
 shoot = False
 imBunker = PhotoImage(file = "picture/masqueCovid.gif")
