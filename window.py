@@ -24,7 +24,8 @@ def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec d
     return player(0,3,[450,700])
 
 def newGame():
-    global alienIdList,alienList,bunkerList,idBunkerList
+    global alienIdList,alienList,bunkerList,idBunkerList,varStop
+    varStop += 1
     for element in alienIdList:
         spaceCanvas.delete(element)
     for element in idBunkerList:
@@ -37,6 +38,7 @@ def newGame():
 #Fonction qui permet d'instancier le player1 et d'obtenir les paramètres Vie / Score / position et de les afficher
 def play():
     global lives,score,player1
+    global varStop
     player1 = newPlayer()
     spaceCanvas.coords(shipId,player1.getPosition()[0],player1.getPosition()[1])
     lives.set("Lives: "+str(player1.getLife()))
@@ -146,7 +148,8 @@ def alienCreate(xPos,yPos,nbr,nbrKaren):
             xPos += 60
 
 #Fonction qui gère le tir d'un alien après un temps aléatoire entre 7 et 10 sec
-def alienShoot(fAlien,fAlienList) :
+def alienShoot(fAlien,fAlienList,currentVarStop):
+    global varStop
     time = randint(7000,10000)
 #Fonction qui soit tue un bunker et supprime le tir soit supprime le tir s'il sort de l'ecran ou touche le joueur
     def _Shoot(X,Y,alienList) :
@@ -167,19 +170,19 @@ def alienShoot(fAlien,fAlienList) :
                 bunkerDestroy = True
 
                 if fAlien in alienList:
-                    spaceWindow.after(time,alienShoot,fAlien,alienList)
+                    spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
 
         
         if Y > 850 and bunkerDestroy == False:
             spaceCanvas.delete(covidProjectileId)
             if fAlien in alienList:
-                spaceWindow.after(time,alienShoot,fAlien,alienList)
+                spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
 
         elif X > player1.getPosition()[0]-25 and X < player1.getPosition()[0]+25 and Y > player1.getPosition()[1]-25 and Y < player1.getPosition()[1]+25 and bunkerDestroy == False :
             spaceCanvas.delete(covidProjectileId)
             print("AIE")
             #Loselife() #FONCTION LOSELIFE POUR LOSE LA LIFE
-            spaceWindow.after(time,alienShoot,fAlien,alienList)
+            spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
 
 
         elif bunkerDestroy == False:
@@ -187,12 +190,12 @@ def alienShoot(fAlien,fAlienList) :
             spaceCanvas.coords(covidProjectileId,X,Y)
             spaceWindow.after(50,_Shoot,X,Y,alienList)
      
-    
-    if fAlien in fAlienList:
-        positionX = fAlien.getPosition()[0] 
-        positionY = fAlien.getPosition()[1] + 38
-        covidProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
-        spaceWindow.after(50,_Shoot,positionX,positionY,fAlienList)
+    if varStop == currentVarStop :
+        if fAlien in fAlienList:
+            positionX = fAlien.getPosition()[0] 
+            positionY = fAlien.getPosition()[1] + 38
+            covidProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
+            spaceWindow.after(50,_Shoot,positionX,positionY,fAlienList)
         
 
 
@@ -200,6 +203,7 @@ def alienShoot(fAlien,fAlienList) :
 def aliens():
     global alienList
     global alienIdList
+    global varStop
     move = 1
     alienCreate(75,50,11,5)
     alienCreate(100,110,11,0)
@@ -209,11 +213,12 @@ def aliens():
     for element in alienList:
         if element.getType() == 2:
             time = randint(7000,10000)
-            spaceWindow.after(time,alienShoot,element,alienList)
+            spaceWindow.after(time,alienShoot,element,alienList,varStop)
 
 def boss():
     global alienList
     global alienIdList
+    global varStop
 
     if alienList != []:
         spaceWindow.after(1000,boss)
@@ -223,7 +228,7 @@ def boss():
         alienIdList.append(tempBoss.dispAlien(spaceCanvas,trump))
         alienMove(alienList,alienIdList,1)
         time = randint(5000,7000)
-        spaceWindow.after(time,alienShoot,tempBoss,alienList)
+        spaceWindow.after(time,alienShoot,tempBoss,alienList,varStop)
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):
@@ -287,6 +292,7 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 #Image et variables globales
+varStop = 1
 player1 = newPlayer()
 bunkerList = []
 idBunkerList = []
