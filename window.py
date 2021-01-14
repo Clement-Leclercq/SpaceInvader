@@ -130,25 +130,54 @@ def alienCreate(xPos,yPos,nbr,nbrKaren):
             alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
             xPos += 60
 
-
-def alienShoot(fAlien,alienList) :
+#Fonction qui gère le tir d'un alien après un temps aléatoire entre 7 et 10 sec
+def alienShoot(fAlien,fAlienList) :
     time = randint(7000,10000)
+#Fonction qui soit tue un bunker et supprime le tir soit supprime le tir s'il sort de l'ecran ou touche le joueur
     def _Shoot(X,Y,alienList) :
-        test = False
-        if Y > 850 :
-            spaceCanvas.delete(covideProjectileId)
+        global idBunkerList
+        global bunkerList
+        global player1
+
+        posBunkerList = []
+        for element in bunkerList:
+            posBunkerList.append(element.getPosition())
+        bunkerDestroy = False
+        for i,element in enumerate(posBunkerList):
+            if X > element[0]-25 and X < element[0]+25 and Y > element[1]-25 and Y < element[1]+25:
+                spaceCanvas.delete(covidProjectileId)
+                spaceCanvas.delete(idBunkerList[i])
+                idBunkerList.pop(i)
+                bunkerList.pop(i)
+                bunkerDestroy = True
+
+                if fAlien in alienList:
+                    spaceWindow.after(time,alienShoot,fAlien,alienList)
+
+        
+        if Y > 850 and bunkerDestroy == False:
+            spaceCanvas.delete(covidProjectileId)
             if fAlien in alienList:
                 spaceWindow.after(time,alienShoot,fAlien,alienList)
-        else:
+
+        elif X > player1.getPosition()[0]-25 and X < player1.getPosition()[0]+25 and Y > player1.getPosition()[1]-25 and Y < player1.getPosition()[1]+25 and bunkerDestroy == False :
+            spaceCanvas.delete(covidProjectileId)
+            print("AIE")
+            #Loselife() #FONCTION LOSELIFE POUR LOSE LA LIFE
+            spaceWindow.after(time,alienShoot,fAlien,alienList)
+
+
+        elif bunkerDestroy == False:
             Y += 25
-            spaceCanvas.coords(covideProjectileId,X,Y)
+            spaceCanvas.coords(covidProjectileId,X,Y)
             spaceWindow.after(50,_Shoot,X,Y,alienList)
+     
     
-    if fAlien in alienList:
+    if fAlien in fAlienList:
         positionX = fAlien.getPosition()[0] 
         positionY = fAlien.getPosition()[1] + 38
-        covideProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
-        spaceWindow.after(50,_Shoot,positionX,positionY,alienList)
+        covidProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
+        spaceWindow.after(50,_Shoot,positionX,positionY,fAlienList)
         
 
 
@@ -164,7 +193,7 @@ def aliens():
     alienMove(alienList,alienIdList,move)
     for element in alienList:
         if element.getType() == 2:
-            print("ok")
+            
             time = randint(7000,10000)
             spaceWindow.after(time,alienShoot,element,alienList)
 
@@ -234,6 +263,7 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 #Image et variables globales
+player1 = newPlayer()
 bunkerList=[]
 idBunkerList=[]
 alienList = []
