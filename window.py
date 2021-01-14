@@ -23,6 +23,17 @@ from bunker import bunker #Classe bunker qui gère les protections entre le joue
 def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
     return player(0,3,[450,700])
 
+def newGame():
+    global alienIdList,alienList,bunkerList,idBunkerList
+    for element in alienIdList:
+        spaceCanvas.delete(element)
+    for element in idBunkerList:
+        spaceCanvas.delete(element)
+    alienIdList = []
+    alienList = []
+    bunkerList = []
+    idBunkerList = []
+    play()
 #Fonction qui permet d'instancier le player1 et d'obtenir les paramètres Vie / Score / position et de les afficher
 def play():
     global lives,score,player1
@@ -58,19 +69,23 @@ def playerShoot():
         posList = []
         for element in alienList:
             posList.append(element.getPosition())
-        alienDestroy = False
+        alienTouch = False
         for i,element in enumerate(posList):
-            if X > element[0]-30 and X < element[0]+30 and Y > element[1]-25 and Y < element[1]+25:
+            hitbox = alienList[0].getHitbox()
+            if X > element[0]-hitbox[0] and X < element[0]+hitbox[0] and Y > element[1]-hitbox[1] and Y < element[1]+hitbox[1]:
+                print(i)
+                alienList[i].decreaseDurability(1)
+                if alienList[i].getDurability() == 0:
+                    spaceCanvas.delete(alienIdList[i])
+                    alienIdList.pop(i)
+                    alienList.pop(i)
                 spaceCanvas.delete(vaccineId)
-                spaceCanvas.delete(alienIdList[i])
-                alienIdList.pop(i)
-                alienList.pop(i)
+                alienTouch = True
                 shoot = False
-                alienDestroy = True
-        if Y < 50 and alienDestroy == False:
+        if Y < 50 and alienTouch == False:
             spaceCanvas.delete(vaccineId)
             shoot = False
-        elif alienDestroy == False:
+        elif alienTouch == False:
             Y -= 25
             spaceCanvas.coords(vaccineId,X,Y)
             spaceWindow.after(50,_shootMove,X,Y)
@@ -164,13 +179,22 @@ def aliens():
     alienMove(alienList,alienIdList,move)
     for element in alienList:
         if element.getType() == 2:
-            print("ok")
             time = randint(7000,10000)
             spaceWindow.after(time,alienShoot,element,alienList)
 
 def boss():
     global alienList
-    print("boss is coming")
+    global alienIdList
+
+    if alienList != []:
+        spaceWindow.after(1000,boss)
+    else:
+        tempBoss = alien(3,[450,50],5,[50,50])
+        alienList.append(tempBoss)
+        alienIdList.append(tempBoss.dispAlien(spaceCanvas,trump))
+        alienMove(alienList,alienIdList,1)
+        time = randint(5000,7000)
+        spaceWindow.after(time,alienShoot,tempBoss,alienList)
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):
@@ -183,19 +207,19 @@ def alienMove(alienList,alienIdList,move):
                 posAlienLeft = posAlien
             elif posAlien[0] > posAlienRight[0]:
                 posAlienRight = posAlien
-
-        if posAlienLeft[0] > 30 and move == 0:
+        hitbox = alienList[0].getHitbox()
+        if posAlienLeft[0] > hitbox[0] and move == 0:
             for element,idElement in zip(alienList,alienIdList):
                 element.goingLeft()
                 changingCoord(element,idElement)
             spaceWindow.after(200,alienMove,alienList,alienIdList,move)
-        elif posAlienLeft[0] <= 30 and move == 0:
+        elif posAlienLeft[0] <= hitbox[0] and move == 0:
             move = 1
             for element,idElement in zip(alienList,alienIdList):
                 element.goingDown()
                 changingCoord(element,idElement)
             spaceWindow.after(200,alienMove,alienList,alienIdList,move)
-        elif posAlienRight[0] < 870 and move == 1:
+        elif posAlienRight[0] < 900-hitbox[0] and move == 1:
             for element,idElement in zip(alienList,alienIdList):
                 element.goingRight()
                 changingCoord(element,idElement)
@@ -218,7 +242,7 @@ spaceWindow.geometry("980x800+0+0")
 #Création des différents éléments
 #Les boutons
 quitButton = Button(spaceWindow, text = "Quit", command = spaceWindow.destroy)
-newButton = Button(spaceWindow, text = "New game", command = play)
+newButton = Button(spaceWindow, text = "New game", command = newGame)
 #Les label
 lives = StringVar ()
 lives.set("Lives: ")
@@ -234,8 +258,9 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 #Image et variables globales
-bunkerList=[]
-idBunkerList=[]
+player1 = newPlayer()
+bunkerList = []
+idBunkerList = []
 alienList = []
 alienIdList = []
 vaccine = PhotoImage(file = "picture/playershoot.gif")

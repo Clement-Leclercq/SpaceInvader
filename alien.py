@@ -36,8 +36,17 @@ class alien :
     def decreaseDurability(self,decrease):
         self.__durability -= decrease
     
+    def getDurability(self):
+        return self.__durability
+    
     def dispAlien(self,idCanvas,picture):
         return idCanvas.create_image(self.__position[0],self.__position[1], image = picture)
+    
+    def getHitbox(self):
+        if self.__type != 3:
+            return [30,25]
+        else:
+            return [55,55]
 """
     def alienShoot(self):
         #Crée un tir d'alien 
