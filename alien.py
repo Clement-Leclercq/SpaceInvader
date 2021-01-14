@@ -6,10 +6,11 @@ TO DO: Tout
 """
 #------------------Classe alien------------------------#
 class alien :
-    def __init__(self,cType,cPosition,cDurability) :
+    def __init__(self,cType,cPosition,cDurability,cSpeed = [10,25]) :
         self.__type = cType
         self.__position = cPosition
         self.__durability = cDurability
+        self.__speed = cSpeed
 
     def setPosition(self,newPosition):
         self.__position = newPosition
@@ -20,17 +21,17 @@ class alien :
 
     def getType(self):
         return self.__type
-        
+
     def goingDown(self):
-        self.__position[1] += 25
+        self.__position[1] += self.__speed[1]
 
     def goingLeft(self):   
         #L'alien va à gauche
-        self.__position[0] -= 10
+        self.__position[0] -= self.__speed[0]
 
     def goingRight(self):
         #L'alien va à droite 
-        self.__position[0] += 10 
+        self.__position[0] += self.__speed[0] 
     
     def decreaseDurability(self,decrease):
         self.__durability -= decrease

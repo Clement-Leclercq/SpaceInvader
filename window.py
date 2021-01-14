@@ -33,6 +33,7 @@ def play():
     spaceCanvas.focus_set()
     bunkers()
     aliens()
+    boss()
 
 #Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement
 def playerMove(event,pPlayer) :
@@ -53,13 +54,23 @@ def playerShoot():
         global shoot
         global alienList
         global alienIdList
-        # Alien get position
-        # if Y et X = une position alien détruitre alien et le shoot sinon elif
-        if Y < 50:
+
+        posList = []
+        for element in alienList:
+            posList.append(element.getPosition())
+        alienDestroy = False
+        for i,element in enumerate(posList):
+            if X > element[0]-30 and X < element[0]+30 and Y > element[1]-25 and Y < element[1]+25:
+                spaceCanvas.delete(vaccineId)
+                spaceCanvas.delete(alienIdList[i])
+                alienIdList.pop(i)
+                alienList.pop(i)
+                shoot = False
+                alienDestroy = True
+        if Y < 50 and alienDestroy == False:
             spaceCanvas.delete(vaccineId)
-            test = True
             shoot = False
-        else:
+        elif alienDestroy == False:
             Y -= 25
             spaceCanvas.coords(vaccineId,X,Y)
             spaceWindow.after(50,_shootMove,X,Y)
@@ -137,12 +148,13 @@ def aliens():
     global alienList
     global alienIdList
     move = 1
-    alienCreate(75,50,11,2)
-    alienCreate(100,110,11,1)
-    alienCreate(75,170,11,2)
-    alienCreate(100,230,11,1)
+    alienCreate(75,50,1,2)
+    #alienCreate(75,50,11,2)
+    #alienCreate(100,110,11,1)
+    #alienCreate(75,170,11,2)
+    #alienCreate(100,230,11,1)
     alienMove(alienList,alienIdList,move)
-
+"""
     #deuxième code tempo 
     while alienList != [] :
         for i in range(0,len(alienList)) :
@@ -151,7 +163,10 @@ def aliens():
     
     
     #Fin deuxième code tempo
-
+"""
+def boss():
+    global alienList
+    print("boss is coming")
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):
@@ -226,7 +241,7 @@ imBunker = PhotoImage(file = "picture/masqueCovid.gif")
 ship = PhotoImage(file = "picture/harold.gif")
 covid = PhotoImage(file = "picture/covid1.gif")
 karen = PhotoImage(file = "picture/karen.gif")
-
+boss = PhotoImage(file = "picture/trump.gif")
 
 #Création du vaisseau  et de ses intéractions
 shipId = spaceCanvas.create_image(0,0,image = ship)
