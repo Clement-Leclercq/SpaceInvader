@@ -109,38 +109,47 @@ def bunkers() :
 
     
 #Fonction qui positionne les aliens :
-def alienCreate(xPos,yPos,nbr,alienType):
+def alienCreate(xPos,yPos,nbr,nbrKaren):
     global alienList
     global alienIdList
+    alienType = 1
     for i in range(0,nbr):
         tempAlien = alien(alienType,[xPos,yPos],1)
         alienList.append(tempAlien)
-        if alienType == 1:
-            image = covid
-            alienType = 2
+        if nbrKaren > 0:
+            if alienType == 1:
+                image = covid
+                alienType = 2
+            else:
+                image = karen
+                alienType = 1
+            alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
+            xPos += 60
         else:
-            image = karen
-            alienType = 1
-        alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
-        xPos += 60
+            image = covid
+            alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
+            xPos += 60
 
 
-def alienShoot(fAlien) :
-    spaceWindow.after(randint,3000,5000)
-    def _Shoot(X,Y) :
+def alienShoot(fAlien,alienList) :
+    time = randint(7000,10000)
+    def _Shoot(X,Y,alienList) :
+        test = False
         if Y > 850 :
             spaceCanvas.delete(covideProjectileId)
-            
+            if fAlien in alienList:
+                spaceWindow.after(time,alienShoot,fAlien,alienList)
         else:
             Y += 25
             spaceCanvas.coords(covideProjectileId,X,Y)
-            spaceWindow.after(50,_Shoot,X,Y)
+            spaceWindow.after(50,_Shoot,X,Y,alienList)
     
-    positionX = fAlien.getPosition()[0] 
-    positionY = fAlien.getPosition()[1] + 38
-    covideProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
-    spaceWindow.after(50,_Shoot,positionX,positionY)
-
+    if fAlien in alienList:
+        positionX = fAlien.getPosition()[0] 
+        positionY = fAlien.getPosition()[1] + 38
+        covideProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
+        spaceWindow.after(50,_Shoot,positionX,positionY,alienList)
+        
 
 
 #Fonction qui positionne les aliens : 
@@ -148,22 +157,17 @@ def aliens():
     global alienList
     global alienIdList
     move = 1
-    alienCreate(75,50,1,2)
-    #alienCreate(75,50,11,2)
-    #alienCreate(100,110,11,1)
-    #alienCreate(75,170,11,2)
-    #alienCreate(100,230,11,1)
+    alienCreate(75,50,11,5)
+    alienCreate(100,110,11,0)
+    alienCreate(75,170,11,0)
+    alienCreate(100,230,11,5)
     alienMove(alienList,alienIdList,move)
-"""
-    #deuxième code tempo 
-    while alienList != [] :
-        for i in range(0,len(alienList)) :
-            if alienList[i].getType == 2 :
-                alienShoot(alienList[i])
-    
-    
-    #Fin deuxième code tempo
-"""
+    for element in alienList:
+        if element.getType() == 2:
+            print("ok")
+            time = randint(7000,10000)
+            spaceWindow.after(time,alienShoot,element,alienList)
+
 def boss():
     global alienList
     print("boss is coming")
@@ -241,7 +245,7 @@ imBunker = PhotoImage(file = "picture/masqueCovid.gif")
 ship = PhotoImage(file = "picture/harold.gif")
 covid = PhotoImage(file = "picture/covid1.gif")
 karen = PhotoImage(file = "picture/karen.gif")
-boss = PhotoImage(file = "picture/trump.gif")
+trump = PhotoImage(file = "picture/trump.gif")
 
 #Création du vaisseau  et de ses intéractions
 shipId = spaceCanvas.create_image(0,0,image = ship)
