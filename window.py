@@ -8,7 +8,8 @@ Fait le 17/12/2020
 TO DO: 
 """
 #Imporation de time pour permettre la gestion de pause
-import time, random
+import time
+from random import randint
 
 #Importation des bibliothèques tkinter nécessaires
 from tkinter import Tk, Button, Label, StringVar, Entry, Canvas, PhotoImage, NW, W, E, N, S,Toplevel
@@ -112,10 +113,24 @@ def alienCreate(xPos,yPos,nbr,alienType):
         alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
         xPos += 60
 
-"""
-def alienShoot() :
- after.(randint(3000,5000))
-  """
+
+def alienShoot(fAlien) :
+    spaceWindow.after(randint,3000,5000)
+    def _Shoot(X,Y) :
+        if Y > 850 :
+            spaceCanvas.delete(covideProjectileId)
+            
+        else:
+            Y += 25
+            spaceCanvas.coords(covideProjectileId,X,Y)
+            spaceWindow.after(50,_Shoot,X,Y)
+    
+    positionX = fAlien.getPosition()[0] 
+    positionY = fAlien.getPosition()[1] + 38
+    covideProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
+    spaceWindow.after(50,_Shoot,positionX,positionY)
+
+
 
 #Fonction qui positionne les aliens : 
 def aliens():
@@ -131,8 +146,8 @@ def aliens():
     #deuxième code tempo 
     while alienList != [] :
         for i in range(0,len(alienList)) :
-            if alienList[i].getType == 1 :
-                alienShoot()
+            if alienList[i].getType == 2 :
+                alienShoot(alienList[i])
     
     
     #Fin deuxième code tempo
@@ -205,6 +220,7 @@ idBunkerList=[]
 alienList = []
 alienIdList = []
 vaccine = PhotoImage(file = "picture/playershoot.gif")
+covidProjectile = PhotoImage(file="picture/covidProjectile.gif")
 shoot = False
 imBunker = PhotoImage(file = "picture/masqueCovid.gif")
 ship = PhotoImage(file = "picture/harold.gif")
