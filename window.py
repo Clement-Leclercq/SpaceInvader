@@ -8,7 +8,7 @@ Fait le 17/12/2020
 TO DO: 
 """
 #Imporation de time pour permettre la gestion de pause
-import time
+import time, random
 
 #Importation des bibliothèques tkinter nécessaires
 from tkinter import Tk, Button, Label, StringVar, Entry, Canvas, PhotoImage, NW, W, E, N, S,Toplevel
@@ -96,7 +96,6 @@ def bunkers() :
     bunkerCreate(775,550,3)
 
     
-
 #Fonction qui positionne les aliens :
 def alienCreate(xPos,yPos,nbr,alienType):
     global alienList
@@ -113,6 +112,12 @@ def alienCreate(xPos,yPos,nbr,alienType):
         alienIdList.append(tempAlien.dispAlien(spaceCanvas,image))
         xPos += 60
 
+"""
+def alienShoot() :
+ after.(randint(3000,5000))
+  """
+
+#Fonction qui positionne les aliens : 
 def aliens():
     global alienList
     global alienIdList
@@ -122,6 +127,16 @@ def aliens():
     alienCreate(75,170,11,2)
     alienCreate(100,230,11,1)
     alienMove(alienList,alienIdList,move)
+
+    #deuxième code tempo 
+    while alienList != [] :
+        for i in range(0,len(alienList)) :
+            if alienList[i].getType == 1 :
+                alienShoot()
+    
+    
+    #Fin deuxième code tempo
+
 
 #Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
 def alienMove(alienList,alienIdList,move):

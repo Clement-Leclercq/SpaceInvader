@@ -18,6 +18,9 @@ class alien :
     def getPosition(self):
         return self.__position
 
+    def getType(self):
+        return self.__type
+        
     def goingDown(self):
         self.__position[1] += 25
 
