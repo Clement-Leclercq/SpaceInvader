@@ -22,9 +22,10 @@ from bunker import bunker #Classe bunker qui gère les protections entre le joue
 def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
     return player(0,3,[450,700])
 
-def newGame(): #Fonction qui permet de recréer une partie en faisant disparaître les aliens et les bunkers
-    global alienIdList,alienList,bunkerList,idBunkerList,varStop
-    varStop += 1
+def stopGame(): #Fonction qui permet de détruire les aliens et les bunkers
+    global alienIdList,alienList,bunkerList,idBunkerList,gameCheck
+
+    gameCheck = True
     for element in alienIdList:
         spaceCanvas.delete(element)
     for element in idBunkerList:
@@ -33,12 +34,17 @@ def newGame(): #Fonction qui permet de recréer une partie en faisant disparaît
     alienList = []
     bunkerList = []
     idBunkerList = []
+
+def newGame(): #Fonction qui permet d'initialiser une nouvelle partie 
+    global varStop
+    varStop += 1
+    stopGame()
     play()
 
 #Fonction qui permet d'instancier le joueur et de faire afficher la vie et le score, cette fonction lance aussi la création des aliens
 def play():
-    global lives,score,player1
-    global varStop
+    global lives,score,player1,varStop,gameCheck
+    gameCheck = False
     player1 = newPlayer()
     spaceCanvas.coords(shipId,player1.getPosition()[0],player1.getPosition()[1])
     lives.set("Lives: "+str(player1.getLife()))
@@ -49,7 +55,7 @@ def play():
     checkLife()
     boss()
 
-#Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement
+#Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement et les différents "bonus" qu'il peut faire
 def playerMove(event,pPlayer) :
     global shoot
     key = event.keysym
@@ -59,6 +65,12 @@ def playerMove(event,pPlayer) :
         pPlayer.goLeft()
     elif key == 'space' and shoot == False:
         playerShoot()
+    elif key == 'l':
+        pPlayer.setLife(999999999999)
+        lives.set("Lives: "+str(pPlayer.getLife()))
+    elif key == 'w':
+        pPlayer.setScore(999999999999)
+        gameIsWon()
     spaceCanvas.coords(shipId,pPlayer.getPosition()[0],pPlayer.getPosition()[1])
 """ RAJOUTER CHEAT CODE """
 
@@ -159,15 +171,12 @@ def alienCreate(xPos,yPos,nbr,nbrKaren):
             xPos += 60
 
 #Fonction qui gère le tir d'un alien après un temps aléatoire entre 7 et 10 sec
-def alienShoot(fAlien,fAlienList,currentVarStop):
-    global varStop
+def alienShoot(aliens,currentVarStop):
+    global varStop, alienList
     time = randint(7000,10000)
 #Fonction qui soit tue un bunker et supprime le tir soit supprime le tir s'il sort de l'ecran ou touche le joueur
-    def _Shoot(X,Y,alienList) :
-        global idBunkerList
-        global bunkerList
-        global player1
-
+    def _Shoot(X,Y) :
+        global idBunkerList, bunkerList, player1, alienList
         posBunkerList = []
         for element in bunkerList:
             posBunkerList.append(element.getPosition())
@@ -179,42 +188,38 @@ def alienShoot(fAlien,fAlienList,currentVarStop):
                 idBunkerList.pop(i)
                 bunkerList.pop(i)
                 bunkerDestroy = True
+                if aliens in alienList:
+                    spaceWindow.after(time,alienShoot,aliens,varStop)
 
-                if fAlien in alienList:
-                    spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
-
-        
         if Y > 850 and bunkerDestroy == False:
             spaceCanvas.delete(covidProjectileId)
-            if fAlien in alienList:
-                spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
+            if aliens in alienList:
+                spaceWindow.after(time,alienShoot,aliens,varStop)
 
         elif X > player1.getPosition()[0]-25 and X < player1.getPosition()[0]+25 and Y > player1.getPosition()[1]-25 and Y < player1.getPosition()[1]+25 and bunkerDestroy == False :
             spaceCanvas.delete(covidProjectileId)
             player1.decreaseLife()
             lives.set("Lives: "+str(player1.getLife()))
-            spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
+            spaceWindow.after(time,alienShoot,aliens,varStop)
 
 
         elif bunkerDestroy == False:
             Y += 25
             spaceCanvas.coords(covidProjectileId,X,Y)
-            spaceWindow.after(50,_Shoot,X,Y,alienList)
+            spaceWindow.after(50,_Shoot,X,Y)
      
     if varStop == currentVarStop :
-        if fAlien in fAlienList:
-            positionX = fAlien.getPosition()[0] 
-            positionY = fAlien.getPosition()[1] + 38
+        if  aliens in alienList:
+            positionX = aliens.getPosition()[0] 
+            positionY = aliens.getPosition()[1] + 38
             covidProjectileId = spaceCanvas.create_image(positionX,positionY,image = covidProjectile)
-            spaceWindow.after(50,_Shoot,positionX,positionY,fAlienList)
+            spaceWindow.after(50,_Shoot,positionX,positionY)
         
 
 
 #Fonction qui positionne les aliens : 
 def aliens():
-    global alienList
-    global alienIdList
-    global varStop
+    global alienList, alienIdList, varStop
     move = 1
     alienCreate(75,50,11,5)
     alienCreate(100,110,11,0)
@@ -224,22 +229,19 @@ def aliens():
     for element in alienList:
         if element.getType() == 2:
             time = randint(7000,10000)
-            spaceWindow.after(time,alienShoot,element,alienList,varStop)
+            spaceWindow.after(time,alienShoot,element,varStop)
 
 def boss():
-    global alienList
-    global alienIdList
-    global varStop
-
+    global alienList, alienIdList, varStop, gameCheck
     if alienList != []:
         spaceWindow.after(1000,boss)
-    else:
+    elif gameCheck == False:
         tempBoss = alien(3,[450,50],5,[50,50])
         alienList.append(tempBoss)
         alienIdList.append(tempBoss.dispAlien(spaceCanvas,trump))
         alienMove(alienList,alienIdList,1)
         time = randint(5000,7000)
-        spaceWindow.after(time,alienShoot,tempBoss,alienList,varStop)
+        spaceWindow.after(time,alienShoot,tempBoss,varStop)
 
 def getLeftRightOrBottom(alienList,choice):
     if choice == True:
@@ -301,8 +303,11 @@ def checkLife():
         gameIsLost()
 
 def gameIsLost():
-    print("Perdu t nul Harold est mort")
+    stopGame()
     messagebox.showinfo("Harold is dead","Oh no you have failed to protect Harold from Covid 19 !", icon = 'error')
+
+def gameIsWon():
+    stopGame()
 
 
 """
@@ -331,6 +336,7 @@ spaceCanvas = Canvas(spaceWindow, width = x, height = y)
 spaceCanvas.create_image(0,0,anchor=NW, image = picture)
 
 #Image et variables globales
+gameCheck = False
 varStop = 1
 player1 = newPlayer()
 bunkerList = []
@@ -352,6 +358,8 @@ spaceCanvas.focus_set()
 spaceCanvas.bind("<Left>",lambda event : playerMove(event,player1))
 spaceCanvas.bind("<Right>",lambda event : playerMove(event,player1))
 spaceCanvas.bind("<space>",lambda event : playerMove(event,player1))
+spaceCanvas.bind("<l>",lambda event : playerMove(event,player1))
+spaceCanvas.bind("<w>",lambda event : playerMove(event,player1))
 
 #Agencement dans la fenêtre
 scoreLabel.grid(row = 1, column = 1, sticky = W)
