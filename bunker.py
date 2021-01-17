@@ -13,8 +13,7 @@ class bunker :
     def __init__(self,cXPos,cYPos) :
         self.__xPos = cXPos
         self.__yPos = cYPos
-        
-        
+            
     def setPosition(self,newXPosition,newYPosition):
         self.__xPos = newXPosition
         self.__yPos = newYPosition
