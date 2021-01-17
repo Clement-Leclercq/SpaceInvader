@@ -7,8 +7,7 @@ Programme fait par Pierre Gosson et Clément Leclercq
 Fait le 17/12/2020
 TO DO: 
 """
-#Imporation de time pour permettre la gestion de pause
-import time
+#Imporation de randint pour générer des nombres entiers aléatoires
 from random import randint
 
 #Importation des bibliothèques tkinter nécessaires
@@ -17,13 +16,13 @@ from tkinter import messagebox #permet la boite de dialogue
 
 #Importation de nos classes
 from player import player #Classe player qui gère vie et score et position du vaisseau
-from alien import alien #Classe alien qui gère le nombre et la position de l'alien
+from alien import alien #Classe alien qui gère le type, la position de l'alien, sa résistance, sa vitesse
 from bunker import bunker #Classe bunker qui gère les protections entre le joueur et les aliens
 
 def newPlayer(): #Fonction qui permet de créer un objet de classe joueur avec des paramètres standards (score de 0 / 3 vies / position de base)
     return player(0,3,[450,700])
 
-def newGame():
+def newGame(): #Fonction qui permet de recréer une partie en faisant disparaître les aliens et les bunkers
     global alienIdList,alienList,bunkerList,idBunkerList,varStop
     varStop += 1
     for element in alienIdList:
@@ -35,7 +34,8 @@ def newGame():
     bunkerList = []
     idBunkerList = []
     play()
-#Fonction qui permet d'instancier le player1 et d'obtenir les paramètres Vie / Score / position et de les afficher
+
+#Fonction qui permet d'instancier le joueur et de faire afficher la vie et le score, cette fonction lance aussi la création des aliens
 def play():
     global lives,score,player1
     global varStop
@@ -46,6 +46,7 @@ def play():
     spaceCanvas.focus_set()
     bunkers()
     aliens()
+    checkLife()
     boss()
 
 #Fonction qui gère l'input de l'utilisateur pour gérer son tir ou son déplacement
@@ -59,6 +60,7 @@ def playerMove(event,pPlayer) :
     elif key == 'space' and shoot == False:
         playerShoot()
     spaceCanvas.coords(shipId,pPlayer.getPosition()[0],pPlayer.getPosition()[1])
+""" RAJOUTER CHEAT CODE """
 
 #Fonction qui gère le tir du joueur
 def playerShoot():
@@ -75,12 +77,21 @@ def playerShoot():
         for i,element in enumerate(posList):
             hitbox = alienList[0].getHitbox()
             if X > element[0]-hitbox[0] and X < element[0]+hitbox[0] and Y > element[1]-hitbox[1] and Y < element[1]+hitbox[1]:
-                print(i)
                 alienList[i].decreaseDurability(1)
                 if alienList[i].getDurability() == 0:
                     spaceCanvas.delete(alienIdList[i])
+                    alienType = alienList[i].getType()
                     alienIdList.pop(i)
                     alienList.pop(i)
+                    if alienType == 1:
+                        player1.increaseScore(100)
+                        score.set("Score: "+str(player1.getScore()))
+                    elif alienType == 2:
+                        player1.increaseScore(150)
+                        score.set("Score: "+str(player1.getScore()))
+                    else:
+                        player1.increaseScore(500)
+                        score.set("Score: "+str(player1.getScore()))
                 spaceCanvas.delete(vaccineId)
                 alienTouch = True
                 shoot = False
@@ -180,8 +191,8 @@ def alienShoot(fAlien,fAlienList,currentVarStop):
 
         elif X > player1.getPosition()[0]-25 and X < player1.getPosition()[0]+25 and Y > player1.getPosition()[1]-25 and Y < player1.getPosition()[1]+25 and bunkerDestroy == False :
             spaceCanvas.delete(covidProjectileId)
-            print("AIE")
-            #Loselife() #FONCTION LOSELIFE POUR LOSE LA LIFE
+            player1.decreaseLife()
+            lives.set("Lives: "+str(player1.getLife()))
             spaceWindow.after(time,alienShoot,fAlien,alienList,varStop)
 
 
@@ -230,19 +241,37 @@ def boss():
         time = randint(5000,7000)
         spaceWindow.after(time,alienShoot,tempBoss,alienList,varStop)
 
-#Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
-def alienMove(alienList,alienIdList,move):
-    if len(alienList)>0:
+def getLeftRightOrBottom(alienList,choice):
+    if choice == True:
         posAlienLeft = alienList[0].getPosition()
         posAlienRight = alienList[-1].getPosition()
+        posAlienBottom = alienList[0].getPosition()
         for element in alienList:
             posAlien = element.getPosition()
             if posAlien[0] < posAlienLeft[0]:
                 posAlienLeft = posAlien
             elif posAlien[0] > posAlienRight[0]:
                 posAlienRight = posAlien
+        return [posAlienLeft,posAlienRight]
+    else:
+        posAlienBottom = alienList[0].getPosition()
+        for element in alienList:
+            posAlien = element.getPosition()
+            if posAlien[1] > posAlienBottom[1]:
+                posAlienBottom = posAlien
+        return posAlienBottom
+
+#Fonction qui gère le déplacement des aliens (pour l'instant que des allées retours) :
+def alienMove(alienList,alienIdList,move):
+    if len(alienList)>0:
+        extremAlien = getLeftRightOrBottom(alienList,True)
+        posAlienLeft = extremAlien[0]
+        posAlienRight = extremAlien[1]
+        posAlienBottom = getLeftRightOrBottom(alienList,False)
         hitbox = alienList[0].getHitbox()
-        if posAlienLeft[0] > hitbox[0] and move == 0:
+        if posAlienBottom[1] >= 650:
+            gameIsLost()
+        elif posAlienLeft[0] > hitbox[0] and move == 0:
             for element,idElement in zip(alienList,alienIdList):
                 element.goingLeft()
                 changingCoord(element,idElement)
@@ -261,9 +290,19 @@ def alienMove(alienList,alienIdList,move):
         else :
             move = 0
             spaceWindow.after(200,alienMove,alienList,alienIdList,move)
-
+        
 def changingCoord(tempAlien,idAlien):
     spaceCanvas.coords(idAlien,tempAlien.getPosition()[0],tempAlien.getPosition()[1])
+
+def checkLife():
+    if player1.getLife() > 0:
+        spaceWindow.after(100,checkLife)
+    else:
+        gameIsLost()
+
+def gameIsLost():
+    print("Perdu t nul Harold est mort")
+    messagebox.showinfo("Harold is dead","Oh no you have failed to protect Harold from Covid 19 !", icon = 'error')
 
 
 """
@@ -321,6 +360,7 @@ spaceCanvas.grid(row = 2, column = 1, rowspan = 2)
 newButton.grid(row = 2, column = 2)
 quitButton.grid(row = 2, column = 2, sticky = S)
 
+#Lancement inital du jeu
 play()
 
 #Création d'une fenêtre Top level pour présenter le jeu

@@ -16,12 +16,21 @@ class player :
 
     def setLife(self,newlife):
         self.__life = newlife
+    
+    def decreaseLife(self):
+        self.__life -= 1
 
     def getLife(self):
         return self.__life
 
     def setScore(self,newScore):
         self.__score = newScore
+
+    def decreaseScore(self):
+        self.__score -= 50
+
+    def increaseScore(self,point):
+        self.__score += point
 
     def getScore(self):
         return self.__score
