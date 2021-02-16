@@ -141,13 +141,13 @@ def bunkers() :
     bunkerCreate(775,550,3)
 
 #Fonction qui positionne les aliens avec alternance 1 fois sur deux avec l'alien qui tir si on lui dit qu'il y en a:
-def alienCreate(xPos,yPos,nbr,karen):
+def alienCreate(xPos,yPos,nbr,test):
     global alienList, alienIdList
     alienType = 1
     for i in range(0,nbr):
         tempAlien = alien(alienType,[xPos,yPos],1)
         alienList.append(tempAlien)
-        if karen == True:
+        if test == True:
             if alienType == 1:
                 image = covid
                 alienType = 2
